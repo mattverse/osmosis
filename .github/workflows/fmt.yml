@@ -1,4 +1,2 @@
-uses: Jerome1337/gofmt-action@v1.0.4
-with:
-  gofmt-path: './'
-  gofmt-flags: '-l -d'
+- name: Check code formatting using gofmt
+  uses: Jerome1337/gofmt-action@v1.0.4
