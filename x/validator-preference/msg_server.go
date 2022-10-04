@@ -30,7 +30,7 @@ func (server msgServer) SetValidatorSetPreference(goCtx context.Context, msg *ty
 
 	// check if a user already have a validator-set created
 	existingValidators, found := server.keeper.GetValidatorSetPreference(ctx, msg.Delegator)
-	fmt.Println(existingValidators)
+
 	if found {
 		// check if the new preferences is the same as the existing preferences
 		if reflect.DeepEqual(preferences, existingValidators.Preferences) {
