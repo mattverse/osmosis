@@ -1,8 +1,6 @@
 package keeper_test
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	valPref "github.com/osmosis-labs/osmosis/v12/x/validator-preference"
 	"github.com/osmosis-labs/osmosis/v12/x/validator-preference/types"
@@ -13,7 +11,7 @@ func (suite *KeeperTestSuite) TestSetValidatorSetPreference() {
 
 	// setup 3 validators
 	valAddrs := suite.SetupMultipleValidators(3)
-	fmt.Println(valAddrs)
+
 	type param struct {
 		delegator   sdk.AccAddress
 		preferences []types.ValidatorPreference
