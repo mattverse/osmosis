@@ -84,7 +84,7 @@ func (suite *KeeperTestSuite) TestSetValidatorSetPreference() {
 		{
 			name: "create validator set with weights != 1",
 			param: param{
-				delegator: sdk.AccAddress([]byte("addr3---------------")),
+				delegator: sdk.AccAddress([]byte("addr1---------------")),
 				preferences: []types.ValidatorPreference{
 					{
 						ValOperAddress: valAddrs[0],

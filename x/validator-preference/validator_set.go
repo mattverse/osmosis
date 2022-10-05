@@ -25,21 +25,11 @@ func (k Keeper) GetValAddrAndVal(ctx sdk.Context, valOperAddress string) (sdk.Va
 
 // ValidatePreferences checks if the sum of the validator set equals 1.
 func (k Keeper) ValidatePreferences(ctx sdk.Context, preferences []types.ValidatorPreference) error {
-	total_weight := sdk.NewDec(0)
 	for _, val := range preferences {
-		// validation to check that the validator given is valid
 		_, _, err := k.GetValAddrAndVal(ctx, val.ValOperAddress)
 		if err != nil {
 			return err
 		}
-
-		total_weight = total_weight.Add(val.Weight)
 	}
-
-	// check if the total validator distribution weights equal 1
-	if !total_weight.Equal(sdk.NewDec(1)) {
-		return fmt.Errorf("The weights allocated to the validators do not add up to 1, %d", total_weight)
-	}
-
 	return nil
 }

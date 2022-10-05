@@ -26,18 +26,16 @@ var _ types.MsgServer = msgServer{}
 func (server msgServer) SetValidatorSetPreference(goCtx context.Context, msg *types.MsgSetValidatorSetPreference) (*types.MsgSetValidatorSetPreferenceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// new user preference
 	preferences := msg.Preferences
 
 	// check if a user already have a validator-set created
 	existingValidators, found := server.keeper.GetValidatorSetPreference(ctx, msg.Delegator)
-
 	if found {
 		// check if the new preferences is the same as the existing preferences
 		if reflect.DeepEqual(preferences, existingValidators.Preferences) {
 			return nil, fmt.Errorf("The preferences are the same")
 		}
-
-		preferences = existingValidators.Preferences
 	}
 
 	// check if the distribution weights equals 1
@@ -46,7 +44,7 @@ func (server msgServer) SetValidatorSetPreference(goCtx context.Context, msg *ty
 		return nil, err
 	}
 
-	// update the validator-set based on what user provides
+	// create/update the validator-set based on what user provides
 	setMsg := types.ValidatorSetPreferences{
 		Preferences: msg.Preferences,
 	}

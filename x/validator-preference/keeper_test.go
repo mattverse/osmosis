@@ -24,13 +24,13 @@ func (suite *KeeperTestSuite) Cleanup() {
 	suite.cleanup()
 }
 
-func (suite *KeeperTestSuite) SetupValidators(bondStatuses []stakingtypes.BondStatus) []sdk.ValAddress {
+func (suite *KeeperTestSuite) SetupValidators(bondStatuses []stakingtypes.BondStatus) sdk.ValAddress {
 	valAddrs := []sdk.ValAddress{}
 	for _, status := range bondStatuses {
 		valAddr := suite.SetupValidator(status)
 		valAddrs = append(valAddrs, valAddr)
 	}
-	return valAddrs
+	return valAddrs[0]
 }
 
 // SetupMultipleValidators setups "numValidator" validators and returns their address in string
@@ -38,7 +38,7 @@ func (suite *KeeperTestSuite) SetupMultipleValidators(numValidator int) []string
 	valAddrs := []string{}
 	for i := 0; i < numValidator; i++ {
 		valAddr := suite.SetupValidators([]stakingtypes.BondStatus{stakingtypes.Bonded})
-		valAddrs = append(valAddrs, valAddr[0].String())
+		valAddrs = append(valAddrs, valAddr.String())
 	}
 	return valAddrs
 }
