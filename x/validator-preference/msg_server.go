@@ -38,7 +38,7 @@ func (server msgServer) SetValidatorSetPreference(goCtx context.Context, msg *ty
 		}
 	}
 
-	// check if the distribution weights equals 1
+	// checks that all the validators exist on chain
 	err := server.keeper.ValidatePreferences(ctx, preferences)
 	if err != nil {
 		return nil, err

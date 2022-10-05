@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	valPref "github.com/osmosis-labs/osmosis/v12/x/validator-preference"
 	"github.com/osmosis-labs/osmosis/v12/x/validator-preference/types"
@@ -11,7 +13,7 @@ func (suite *KeeperTestSuite) TestSetValidatorSetPreference() {
 
 	// setup 3 validators
 	valAddrs := suite.SetupMultipleValidators(3)
-
+	fmt.Println(valAddrs)
 	type param struct {
 		delegator   sdk.AccAddress
 		preferences []types.ValidatorPreference
@@ -75,27 +77,6 @@ func (suite *KeeperTestSuite) TestSetValidatorSetPreference() {
 					},
 					{
 						ValOperAddress: valAddrs[1],
-						Weight:         sdk.NewDecWithPrec(3, 1),
-					},
-				},
-			},
-			expectPass: false,
-		},
-		{
-			name: "create validator set with weights != 1",
-			param: param{
-				delegator: sdk.AccAddress([]byte("addr1---------------")),
-				preferences: []types.ValidatorPreference{
-					{
-						ValOperAddress: valAddrs[0],
-						Weight:         sdk.NewDecWithPrec(5, 1),
-					},
-					{
-						ValOperAddress: valAddrs[1],
-						Weight:         sdk.NewDecWithPrec(3, 1),
-					},
-					{
-						ValOperAddress: valAddrs[2],
 						Weight:         sdk.NewDecWithPrec(3, 1),
 					},
 				},

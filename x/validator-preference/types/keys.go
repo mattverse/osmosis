@@ -10,6 +10,6 @@ var (
 	// RouterKey is the message route for slashing.
 	RouterKey = ModuleName
 
-	// KeyPrefixSuperfluidAsset defines prefix key for validator set.
+	// KeyPrefixValidatorSet defines prefix key for validator set.
 	KeyPrefixValidatorSet = []byte{0x01}
 )

@@ -42,7 +42,7 @@ func (m MsgSetValidatorSetPreference) ValidateBasic() error {
 
 	// check if the total validator distribution weights equal 1
 	if !total_weight.Equal(sdk.NewDec(1)) {
-		return fmt.Errorf("The weights allocated to the validators do not add up to 1, %d", total_weight)
+		return fmt.Errorf("The weights allocated to the validators do not add up to 1, Got: %d", total_weight)
 	}
 
 	return nil
@@ -65,7 +65,7 @@ const (
 
 var _ sdk.Msg = &MsgDelegateToValidatorSet{}
 
-// NewMsgMsgStakeToValidatorSet creates a msg to stake to a validator.
+// NewMsgMsgStakeToValidatorSet creates a msg to stake to a validator set.
 func NewMsgMsgStakeToValidatorSet(delegator sdk.AccAddress, coin sdk.Coin) *MsgDelegateToValidatorSet {
 	return &MsgDelegateToValidatorSet{
 		Delegator: delegator.String(),
