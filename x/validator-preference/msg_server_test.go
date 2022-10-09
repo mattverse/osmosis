@@ -86,6 +86,8 @@ func (suite *KeeperTestSuite) TestSetValidatorSetPreference() {
 	for _, test := range tests {
 		suite.Run(test.name, func() {
 
+			suite.FundAcc(test.param.delegator, sdk.Coins{sdk.NewInt64Coin("stake", 5)})
+
 			// setup message server
 			msgServer := valPref.NewMsgServerImpl(suite.App.ValidatorPreferenceKeeper)
 			c := sdk.WrapSDKContext(suite.Ctx)

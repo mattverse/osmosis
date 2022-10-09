@@ -16,9 +16,10 @@ type Keeper struct {
 	storeKey      sdk.StoreKey
 	paramSpace    paramtypes.Subspace
 	stakingKeeper types.StakingInterface
+	bankKeeper    types.BankInterface
 }
 
-func NewKeeper(storeKey sdk.StoreKey, paramSpace paramtypes.Subspace, stakingKeeper types.StakingInterface) Keeper {
+func NewKeeper(storeKey sdk.StoreKey, paramSpace paramtypes.Subspace, stakingKeeper types.StakingInterface, bankKeeper types.BankInterface) Keeper {
 	if !paramSpace.HasKeyTable() {
 		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
 	}
@@ -27,6 +28,7 @@ func NewKeeper(storeKey sdk.StoreKey, paramSpace paramtypes.Subspace, stakingKee
 		storeKey:      storeKey,
 		paramSpace:    paramSpace,
 		stakingKeeper: stakingKeeper,
+		bankKeeper:    bankKeeper,
 	}
 }
 
