@@ -32,3 +32,18 @@ func (k Keeper) ValidatePreferences(ctx sdk.Context, preferences []types.Validat
 	}
 	return nil
 }
+
+func (k Keeper) ChargeForCreateValSet(ctx sdk.Context, delegatorAddr string) (err error) {
+	// Send creation fee to community pool
+	creationFee := k.GetParams(ctx).ValsetCreationFee
+	accAddr, err := sdk.AccAddressFromBech32(delegatorAddr)
+	if err != nil {
+		return err
+	}
+	if creationFee != nil {
+		if err := k.communityPoolKeeper.FundCommunityPool(ctx, creationFee, accAddr); err != nil {
+			return err
+		}
+	}
+	return nil
+}

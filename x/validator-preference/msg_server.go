@@ -29,17 +29,6 @@ func (server msgServer) SetValidatorSetPreference(goCtx context.Context, msg *ty
 	// new user preference
 	preferences := msg.Preferences
 
-	delegatorAddr, err := sdk.AccAddressFromBech32(msg.Delegator)
-	if err != nil {
-		return nil, err
-	}
-
-	// check that the user account has funds to prevent spam create
-	userAccBalance := server.keeper.bankKeeper.GetAllBalances(ctx, delegatorAddr)
-	if len(userAccBalance) == 0 {
-		return nil, fmt.Errorf("The user doesnot have any tokens")
-	}
-
 	// check if a user already have a validator-set created
 	existingValidators, found := server.keeper.GetValidatorSetPreference(ctx, msg.Delegator)
 	if found {
@@ -50,7 +39,13 @@ func (server msgServer) SetValidatorSetPreference(goCtx context.Context, msg *ty
 	}
 
 	// checks that all the validators exist on chain
-	err = server.keeper.ValidatePreferences(ctx, preferences)
+	err := server.keeper.ValidatePreferences(ctx, preferences)
+	if err != nil {
+		return nil, err
+	}
+
+	// check that the user account has funds to prevent spam create
+	err = server.keeper.ChargeForCreateValSet(ctx, msg.Delegator)
 	if err != nil {
 		return nil, err
 	}

@@ -13,22 +13,29 @@ import (
 )
 
 type Keeper struct {
-	storeKey      sdk.StoreKey
-	paramSpace    paramtypes.Subspace
-	stakingKeeper types.StakingInterface
-	bankKeeper    types.BankInterface
+	storeKey            sdk.StoreKey
+	paramSpace          paramtypes.Subspace
+	stakingKeeper       types.StakingInterface
+	bankKeeper          types.BankInterface
+	communityPoolKeeper types.CommunityPoolInterface
 }
 
-func NewKeeper(storeKey sdk.StoreKey, paramSpace paramtypes.Subspace, stakingKeeper types.StakingInterface, bankKeeper types.BankInterface) Keeper {
+func NewKeeper(storeKey sdk.StoreKey,
+	paramSpace paramtypes.Subspace,
+	stakingKeeper types.StakingInterface,
+	bankKeeper types.BankInterface,
+	communityPoolKeeper types.CommunityPoolInterface,
+) Keeper {
 	if !paramSpace.HasKeyTable() {
 		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
 	}
 
 	return Keeper{
-		storeKey:      storeKey,
-		paramSpace:    paramSpace,
-		stakingKeeper: stakingKeeper,
-		bankKeeper:    bankKeeper,
+		storeKey:            storeKey,
+		paramSpace:          paramSpace,
+		stakingKeeper:       stakingKeeper,
+		bankKeeper:          bankKeeper,
+		communityPoolKeeper: communityPoolKeeper,
 	}
 }
 
@@ -56,4 +63,15 @@ func (k Keeper) GetValidatorSetPreference(ctx sdk.Context, delegator string) (ty
 	}
 
 	return validatorSet, true
+}
+
+// GetParams returns the total set params.
+func (k Keeper) GetParams(ctx sdk.Context) (params types.Params) {
+	k.paramSpace.GetParamSet(ctx, &params)
+	return params
+}
+
+// SetParams sets the total set of params.
+func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
+	k.paramSpace.SetParamSet(ctx, &params)
 }

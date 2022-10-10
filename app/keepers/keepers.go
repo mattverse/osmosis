@@ -324,6 +324,7 @@ func (appKeepers *AppKeepers) InitNormalKeepers(
 		appKeepers.GetSubspace(validatorpreferencetypes.ModuleName),
 		appKeepers.StakingKeeper,
 		appKeepers.BankKeeper,
+		appKeepers.DistrKeeper,
 	)
 
 	appKeepers.ValidatorPreferenceKeeper = &validatorPreferenceKeeper
@@ -448,6 +449,7 @@ func (appKeepers *AppKeepers) initParamsKeeper(appCodec codec.BinaryCodec, legac
 	paramsKeeper.Subspace(wasm.ModuleName)
 	paramsKeeper.Subspace(tokenfactorytypes.ModuleName)
 	paramsKeeper.Subspace(twaptypes.ModuleName)
+	paramsKeeper.Subspace(validatorpreferencetypes.ModuleName)
 
 	return paramsKeeper
 }

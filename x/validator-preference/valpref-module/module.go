@@ -151,14 +151,12 @@ func (am AppModule) RegisterInvariants(ir sdk.InvariantRegistry) {
 
 // InitGenesis performs the capability module's genesis initialization It returns
 // no validator updates.
-// TODO: Implement
+// TODO: implement this
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) []abci.ValidatorUpdate {
-	// var genState types.GenesisState
-	// // Initialize global index to index in genesis state
-	// cdc.MustUnmarshalJSON(gs, &genState)
-
-	// // InitGenesis(ctx, am.keeper, genState)
-
+	//var genState types.GenesisState
+	// Initialize global index to index in genesis state
+	//cdc.MustUnmarshalJSON(gs, &genState)
+	//am. InitGenesis(ctx, am.keeper, genState)
 	return []abci.ValidatorUpdate{}
 }
 

@@ -20,3 +20,8 @@ type StakingInterface interface {
 type BankInterface interface {
 	GetAllBalances(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 }
+
+// CommunityPoolKeeper defines the contract needed to be fulfilled for community pool interactions.
+type CommunityPoolInterface interface {
+	FundCommunityPool(ctx sdk.Context, amount sdk.Coins, sender sdk.AccAddress) error
+}
