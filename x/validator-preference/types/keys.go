@@ -12,4 +12,7 @@ var (
 
 	// KeyPrefixValidatorSet defines prefix key for validator set.
 	KeyPrefixValidatorSet = []byte{0x01}
+
+	// QuerierRoute defines the module's query routing key
+	QuerierRoute = ModuleName
 )

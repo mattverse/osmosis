@@ -7,8 +7,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/osmosis-labs/osmosis/v12/x/gamm/keeper"
-	"github.com/osmosis-labs/osmosis/v12/x/superfluid/types"
+
+	keeper "github.com/osmosis-labs/osmosis/v12/x/validator-preference"
+	"github.com/osmosis-labs/osmosis/v12/x/validator-preference/types"
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
 
@@ -60,18 +61,15 @@ func (a AppModuleBasic) RegisterInterfaces(reg cdctypes.InterfaceRegistry) {
 // DefaultGenesis returns the capability module's default genesis state.
 // TODO: Implement
 func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
-	return json.RawMessage{}
-	// return cdc.MustMarshalJSON(types.DefaultGenesis())
+	return nil
 }
 
 // ValidateGenesis performs genesis state validation for the capability module.
-// TODO: Implement
 func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
-	// var genState types.GenesisState
-	// if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
-	// 	return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
-	// }
-	// return genState.Validate()
+	var genState types.GenesisState
+	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
+		return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
+	}
 	return nil
 }
 
@@ -104,12 +102,11 @@ type AppModule struct {
 	keeper        keeper.Keeper
 	accountKeeper stakingtypes.AccountKeeper
 	bankKeeper    stakingtypes.BankKeeper
-	gammKeeper    types.GammKeeper
 }
 
 func NewAppModule(cdc codec.Codec, keeper keeper.Keeper,
-	accountKeeper stakingtypes.AccountKeeper, bankKeeper stakingtypes.BankKeeper,
-	gammKeeper types.GammKeeper,
+	accountKeeper stakingtypes.AccountKeeper,
+	bankKeeper stakingtypes.BankKeeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
@@ -117,7 +114,6 @@ func NewAppModule(cdc codec.Codec, keeper keeper.Keeper,
 
 		accountKeeper: accountKeeper,
 		bankKeeper:    bankKeeper,
-		gammKeeper:    gammKeeper,
 	}
 }
 
@@ -134,7 +130,7 @@ func (am AppModule) Route() sdk.Route {
 // QuerierRoute returns the capability module's query routing key.
 func (AppModule) QuerierRoute() string { return types.QuerierRoute }
 
-// LegacyQuerierHandler returns the x/superfluid module's Querier.
+// LegacyQuerierHandler returns the x/validator-preference module's Querier.
 func (am AppModule) LegacyQuerierHandler(legacyQuerierCdc *codec.LegacyAmino) sdk.Querier {
 	return func(sdk.Context, []string, abci.RequestQuery) ([]byte, error) {
 		return nil, fmt.Errorf("legacy querier not supported for the x/%s module", types.ModuleName)
@@ -153,19 +149,18 @@ func (am AppModule) RegisterInvariants(ir sdk.InvariantRegistry) {
 // no validator updates.
 // TODO: implement this
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) []abci.ValidatorUpdate {
-	//var genState types.GenesisState
+	var genState types.GenesisState
 	// Initialize global index to index in genesis state
-	//cdc.MustUnmarshalJSON(gs, &genState)
-	//am. InitGenesis(ctx, am.keeper, genState)
+	cdc.MustUnmarshalJSON(gs, &genState)
+	am.keeper.InitGenesis(ctx, genState)
 	return []abci.ValidatorUpdate{}
 }
 
 // ExportGenesis returns the capability module's exported genesis state as raw JSON bytes.
 // TODO: Come back and fix this
 func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.RawMessage {
-	// var genState types.GenesisState
-	// return cdc.MustMarshalJSON(genState)
-	return json.RawMessage{}
+	genState := am.keeper.ExportGenesis(ctx)
+	return cdc.MustMarshalJSON(genState)
 }
 
 // BeginBlock executes all ABCI BeginBlock logic respective to the capability module.
