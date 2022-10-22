@@ -24,6 +24,15 @@ type SwapI interface {
 		tokenInMaxAmount sdk.Int,
 		tokenOut sdk.Coin,
 	) (tokenInAmount sdk.Int, err error)
+
+	SwapExactAmountIn(
+		ctx sdk.Context,
+		sender sdk.AccAddress,
+		poolId uint64,
+		tokenIn sdk.Coin,
+		tokenOutDenom string,
+		tokenOutMinAmount sdk.Int,
+	) (tokenOutAmount sdk.Int, err error)
 }
 
 // SimulationExtension defines the swap simulation extension.
