@@ -9,6 +9,39 @@ import (
 	cltypes "github.com/osmosis-labs/osmosis/v12/x/concentrated-liquidity/types"
 )
 
+func (s *KeeperTestSuite) TestLLL() {
+	ctx := s.Ctx
+
+	currPrice := sdk.NewDec(5000)
+	currSqrtPrice, err := currPrice.ApproxSqrt()
+	s.Require().NoError(err)
+	currTick := cl.PriceToTick(currPrice)
+
+	lowerPrice := sdk.NewDec(4545)
+	lowerSqrtPrice, err := lowerPrice.ApproxSqrt()
+	s.Require().NoError(err)
+	lowerTick := cl.PriceToTick(lowerPrice)
+
+	upperPrice := sdk.NewDec(5500)
+	upperSqrtPrice, err := upperPrice.ApproxSqrt()
+	s.Require().NoError(err)
+	upperTick := cl.PriceToTick(upperPrice)
+
+	amount0 := sdk.NewInt(1)
+	amount1 := sdk.NewInt(5000)
+
+	liquidity := cl.GetLiquidityFromAmounts(currSqrtPrice, lowerSqrtPrice, upperSqrtPrice, amount0, amount1)
+
+	// create pool
+	pool, err := s.App.ConcentratedLiquidityKeeper.CreateNewConcentratedLiquidityPool(ctx, 1, "eth", "usdc", currSqrtPrice, currTick)
+	s.Require().NoError(err)
+
+	// add position
+	_, _, _, err = s.App.ConcentratedLiquidityKeeper.CreatePosition(s.Ctx, pool.Id, s.TestAccs[0], amount0, amount1, sdk.ZeroInt(), sdk.ZeroInt(), lowerTick.Int64(), upperTick.Int64())
+	s.Require().NoError(err)
+
+}
+
 func (s *KeeperTestSuite) TestCalcOutAmtGivenIn() {
 	ctx := s.Ctx
 	pool, err := s.App.ConcentratedLiquidityKeeper.CreateNewConcentratedLiquidityPool(ctx, 1, "eth", "usdc", sdk.MustNewDecFromStr("70.710678"), sdk.NewInt(85176))
