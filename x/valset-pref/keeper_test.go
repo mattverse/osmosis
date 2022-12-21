@@ -199,7 +199,6 @@ func (suite *KeeperTestSuite) SetupValidatorsAndDelegations() ([]string, []types
 	amountToFund := sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100_000_000)} // 100 osmo
 
 	return valAddrs, preferences, amountToFund
-
 }
 
 func TestKeeperTestSuite(t *testing.T) {
