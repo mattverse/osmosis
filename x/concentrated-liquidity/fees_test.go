@@ -39,6 +39,7 @@ var (
 )
 
 func (s *KeeperTestSuite) TestInitializeFeeAccumulatorPosition() {
+	// test chagne
 	// Setup is done once so that we test
 	// the relationship between test cases.
 	// For example, that positions with non-zero liquidity
