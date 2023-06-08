@@ -23,8 +23,8 @@ jobs:
 
     - name: Install Protoc-gen-swagger
       run: |
-        go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
-        sudo mv $(go env GOPATH)/bin/protoc-gen-openapiv2 $(go env GOPATH)/bin/protoc-gen-swagger
+        go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@latest
+        sudo mv $(go env GOPATH)/bin/protoc-gen-swagger $(go env GOPATH)/bin/protoc-gen-swagger
 
     - name: Download dependencies
       run: go mod download
