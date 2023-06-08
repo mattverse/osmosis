@@ -21,6 +21,11 @@ jobs:
         sudo apt-get update -y
         sudo apt-get install -y protobuf-compiler
 
+    - name: Install Protoc-gen-swagger
+      run: |
+        GO111MODULE=on go get github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+        sudo mv $(go env GOPATH)/bin/protoc-gen-openapiv2 $(go env GOPATH)/bin/protoc-gen-swagger
+
     - name: Download dependencies
       run: go mod download
 
