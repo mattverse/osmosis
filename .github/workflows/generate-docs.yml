@@ -1,12 +1,9 @@
 name: Generate Docs
 
 on: 
-  workflow_dispatch:
   push:
     branches: 
       - main
-      - test-workflow
-
 
 jobs:
   generate-docs:
