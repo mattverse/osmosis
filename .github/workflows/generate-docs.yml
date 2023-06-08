@@ -1,70 +1,30 @@
-name: Generate Docs
+name: Update Docs
 
-on: 
+on:
   workflow_dispatch:
-  push:
-    branches: 
-      - main
-      - test-workflow	
 
 jobs:
-  generate-docs:
+  update-docs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Setup Go
+    - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.16
+        go-version: 1.16 
 
-    - name: Download Go Dependencies
+    - name: Run make docs
       run: |
-        go mod download github.com/cosmos/ibc-go/v4
-        go get github.com/cosmos/cosmos-sdk
-
-    - name: Install yq, protobuf-compiler, and statik
-      run: |
-        sudo wget https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64 -O /usr/bin/yq
-        sudo chmod +x /usr/bin/yq
-        sudo apt-get install -y protobuf-compiler
-        go get github.com/rakyll/statik
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install make
-      run: sudo apt-get install -y make
-
-    - name: Debug current directory
-      run: pwd
-
-    - name: Debug cosmos_sdk_dir
-      run: 'echo "cosmos_sdk_dir: $(go list -f '\''{{ .Dir }}'\'' -m github.com/cosmos/cosmos-sdk)"'
-
-    - name: Run make command
-      run: make docs
-
-    - name: Commit files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -A
-        git commit -m "Add changes" || exit 0  
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        make docs
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        title: "Generated docs updates"
-        body: "Updates to generated docs"
-        branch: "generate-docs-updates"
+        commit-message: Update docs
+        title: 'Update docs'
+        body: 'Update docs'
+        branch: 'docs-update-branch'
