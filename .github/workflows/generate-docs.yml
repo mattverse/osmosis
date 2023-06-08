@@ -22,6 +22,7 @@ jobs:
     - name: Download Go Dependencies
       run: |
         go mod download github.com/cosmos/ibc-go/v4
+        go get github.com/cosmos/cosmos-sdk
 
     - name: Install yq, protobuf-compiler, and statik
       run: |
@@ -37,6 +38,12 @@ jobs:
 
     - name: Install make
       run: sudo apt-get install -y make
+
+    - name: Debug current directory
+      run: pwd
+
+    - name: Debug cosmos_sdk_dir
+      run: echo "cosmos_sdk_dir: $(go list -f '{{ .Dir }}' -m github.com/cosmos/cosmos-sdk)"
 
     - name: Run make command
       run: make docs
