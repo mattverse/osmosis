@@ -25,6 +25,10 @@ jobs:
       run: |
         go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@latest
 
+    - name: Install Statik
+      run: |
+        go get github.com/rakyll/statik
+
     - name: Download dependencies
       run: go mod download
 
