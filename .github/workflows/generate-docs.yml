@@ -60,3 +60,4 @@ jobs:
         title: "Generated docs updates"
         body: "Updates to generated docs"
         branch: "generate-docs-updates"
+
