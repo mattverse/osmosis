@@ -44,7 +44,7 @@ jobs:
       run: pwd
 
     - name: Debug cosmos_sdk_dir
-      run: echo "cosmos_sdk_dir: $(go list -f '{{ .Dir }}' -m github.com/cosmos/cosmos-sdk)"
+      run: 'echo "cosmos_sdk_dir: $(go list -f '\''{{ .Dir }}'\'' -m github.com/cosmos/cosmos-sdk)"'
 
     - name: Run make command
       run: make docs
