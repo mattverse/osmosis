@@ -1,4 +1,4 @@
-aname: Generate Docs
+name: Generate Docs
 
 on: 
   workflow_dispatch:
