@@ -27,11 +27,8 @@ jobs:
 
     - name: Install Statik
       run: |
-        go get github.com/rakyll/statik
-
-    - name: Add GOPATH/bin to PATH
-      run: |
-        echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        sudo apt-get update -y
+        sudo apt-get install -y golang-statik
 
     - name: Download dependencies
       run: go mod download
