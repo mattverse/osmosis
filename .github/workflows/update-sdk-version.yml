@@ -10,7 +10,6 @@ on:
         description: 'Branch name in osmosis-labs/cosmos-sdk to fetch the latest commit from'
         required: true
         default: 'main' # Default branch
-
 jobs:
   update-sdk-version-and-create-pr:
     runs-on: ubuntu-latest
